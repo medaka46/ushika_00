@@ -8,7 +8,11 @@ app = FastAPI()
 
 BASE_DIR = Path(__file__).resolve().parent
 templates = Jinja2Templates(directory=BASE_DIR / "templates")
-app.mount("/static", StaticFiles(directory=BASE_DIR.parent / "static"), name="static")
+
+# Create static directory if it doesn't exist
+static_dir = BASE_DIR / "static"  # Changed to be under app directory instead of parent
+static_dir.mkdir(exist_ok=True)
+app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
 
 def environment_message() -> str:
